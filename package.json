@@ -1,0 +1,33 @@
+{
+    "name": "redis-ticket",
+    "version": "0.0.1",
+    "description": "redis ticket store ",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "redis": "^3.0.2"
+    },
+    "devDependencies": {
+        "mocha": "^8.0.1",
+        "should": "^13.2.3"
+    },
+    "scripts": {
+        "test": "mocha --exit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joewagner/redis-ticket.git"
+    },
+    "keywords": [
+        "redis",
+        "ticket"
+    ],
+    "author": "Joe Wagner",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/joewagner/redis-ticket/issues"
+    },
+    "homepage": "https://github.com/joewagner/redis-ticket#readme"
+}
