@@ -3,7 +3,8 @@ const promisify = require("util").promisify;
 
 const RedisTicket = function (options) {
     const redisOptions = options && options.redis;
-    this.prefix = (options && options.prefix) || 'r-ticket:'
+    const prefix = options && options.prefix
+    this.prefix = typeof prefix === 'string' ? prefix : 'r-ticket:';
     this.client = redis.createClient(redisOptions);
 };
 

@@ -11,8 +11,7 @@ redisClient.on("error", function(error) {
 describe('RedisTicket', function () {
     const prefix = 'r-ticket:';
     const ticketStore = new RedisTicket({
-        prefix: prefix,
-        port: 6379
+        prefix: prefix
     });
     before(async function () {
         const keys = await promisify(redisClient.keys).bind(redisClient)('r-ticket:*');
@@ -60,7 +59,7 @@ describe('RedisTicket', function () {
         should.exist(val);
         JSON.parse(val).userId.should.equal('3456');
 
-        promisify(redisClient.del).bind(redisClient)(prefix + key);
+        await promisify(redisClient.del).bind(redisClient)(prefix + key);
     });
 
     it('should remove tickets after first "get"', async function () {
@@ -72,5 +71,27 @@ describe('RedisTicket', function () {
 
         should.not.exist(val);
     });
+
+    it('should allow custom prefix', async function () {
+        const prefix = 'test-prefix:';
+        const ticketStore = new RedisTicket({
+            prefix: prefix
+        });
+
+        const keys = await promisify(redisClient.keys).bind(redisClient)(prefix + '*');
+
+        for (let i = 0; i < keys.length; i++) {
+            await promisify(redisClient.del).bind(redisClient)(keys[i]);
+        }
+
+        const key = 'test1';
+        const message = 'hello test 1';
+        await ticketStore.set(key, message);
+
+        const val = await promisify(redisClient.get).bind(redisClient)(prefix + key);
+        val.should.equal(message);
+
+        await promisify(redisClient.del).bind(redisClient)(prefix + key);
+    })
 
 });
